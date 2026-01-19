@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>House Price Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="container">
+    <h1>House Price Prediction System</h1>
+    <p>Features used: OverallQual, GrLivArea, TotalBsmtSF, GarageCars, YearBuilt, Neighborhood</p>
+
+    <form method="post" class="form">
+      <label>Overall Quality (1-10)
+        <input name="OverallQual" type="number" step="1" min="1" max="10" required>
+      </label>
+
+      <label>Ground Living Area (GrLivArea) - sqft
+        <input name="GrLivArea" type="number" step="1" required>
+      </label>
+
+      <label>Total Basement Area (TotalBsmtSF) - sqft
+        <input name="TotalBsmtSF" type="number" step="1" required>
+      </label>
+
+      <label>Garage Cars (GarageCars)
+        <input name="GarageCars" type="number" step="1" required>
+      </label>
+
+      <label>Year Built (YearBuilt)
+        <input name="YearBuilt" type="number" step="1" required>
+      </label>
+
+      <label>Neighborhood
+        <select name="Neighborhood" required>
+          {% if neighborhoods %}
+            {% for nb in neighborhoods %}
+              <option value="{{ nb }}">{{ nb }}</option>
+            {% endfor %}
+          {% else %}
+              <option value="">(No categories found — run model_building.py first)</option>
+          {% endif %}
+        </select>
+      </label>
+
+      <button type="submit" class="btn">Predict</button>
+    </form>
+
+    <div class="result">
+      <h2>Prediction</h2>
+      {% if prediction %}
+        <p class="price">{{ prediction }}</p>
+      {% elif error %}
+        <p class="muted">Error: {{ error }}</p>
+      {% else %}
+        <p class="muted">Prediction will appear here after form submission.</p>
+      {% endif %}
+    </div>
+
+    <footer>
+      <p>Algorithm: RandomForestRegressor • Model file: model/house_price_model.pkl • Persistence: joblib</p>
+    </footer>
+  </div>
+</body>
+</html>

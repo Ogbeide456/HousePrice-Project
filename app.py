@@ -2,6 +2,16 @@
 
 from pathlib import Path
 import joblib
+import os
+BASE_DIR = os.path.dirname(__file__)
+MODEL_PATH = os.path.join(BASE_DIR, "house_price_model.pkl")
+
+if not os.path.exists(MODEL_PATH):
+    # Option: call an internal function to train, or import train_model and call it
+    # from train_model import train_and_save; train_and_save()
+    st.warning("Model not found — training now. This can take a while...")
+    # ...call training code here...
+model = joblib.load(MODEL_PATH)
 import json
 import pandas as pd
 from flask import Flask, render_template, request, flash
@@ -52,3 +62,4 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
